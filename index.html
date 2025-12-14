@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Star Rating</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f5f5f5;
+    }
+    .card {
+      background: #fff;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 300px;
+    }
+    .stars {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 16px 0;
+      cursor: pointer;
+    }
+    .star {
+      font-size: 32px;
+      color: #ccc;
+    }
+    .star.active {
+      color: #ffb400;
+    }
+    button {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      background: #000;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    button:disabled {
+      background: #aaa;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h3>Rate your experience</h3>
+    <div class="stars" id="stars"></div>
+    <button id="submit" disabled>Submit</button>
+    <p id="status"></p>
+  </div>
+
+  <script>
+    const starsContainer = document.getElementById('stars');
+    const submitBtn = document.getElementById('submit');
+    const status = document.getElementById('status');
+    let rating = 0;
+
+    for (let i = 1; i <= 5; i++) {
+      const star = document.createElement('span');
+      star.innerHTML = '★';
+      star.classList.add('star');
+      star.onclick = () => selectRating(i);
+      starsContainer.appendChild(star);
+    }
+
+    function selectRating(value) {
+      rating = value;
+      submitBtn.disabled = false;
+      document.querySelectorAll('.star').forEach((s, i) => {
+        s.classList.toggle('active', i < value);
+      });
+    }
+
+    submitBtn.onclick = async () => {
+      submitBtn.disabled = true;
+      status.innerText = 'Submitting...';
+
+      await fetch('https://script.google.com/macros/s/AKfycbx3c11Dc6vyrh5ac6Q5nbyFVwhaY5DTmKVIphquY-WlRpLeWaJ4fcHV-dwYY1BcOlLW9w/exec', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rating })
+      });
+
+      status.innerText = 'Thank you for your feedback';
+    };
+  </script>
+</body>
+</html>
