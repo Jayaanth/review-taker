@@ -80,17 +80,27 @@
       });
     }
 
-    submitBtn.onclick = () => {
+submitBtn.onclick = () => {
+  if (submitBtn.disabled) return;
+
   status.innerText = "Submitting...";
 
   const url =
-    "https://script.google.com/macros/s/AKfycbx4DKmUyyJxWdZVUbTMss-iXSOSF4dBefdNaeQSl_fcK_9zykgCj1lj8hYh41exAHQNZA/exec" +
+    "PASTE_WEB_APP_URLhttps://script.google.com/macros/s/AKfycbx4DKmUyyJxWdZVUbTMss-iXSOSF4dBefdNaeQSl_fcK_9zykgCj1lj8hYh41exAHQNZA/exec" +
     "?rating=" + encodeURIComponent(rating);
 
   fetch(url);
 
+  // 🔒 LOCK UI
+  submitBtn.disabled = true;
+  document.querySelectorAll(".star").forEach(star => {
+    star.style.pointerEvents = "none";
+    star.style.opacity = "0.5";
+  });
+
   status.innerText = "Thank you for your feedback";
 };
+
 
   </script>
 </body>
