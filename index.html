@@ -80,19 +80,18 @@
       });
     }
 
-    submitBtn.onclick = async () => {
-      submitBtn.disabled = true;
-      status.innerText = 'Submitting...';
+    submitBtn.onclick = () => {
+  status.innerText = "Submitting...";
 
-      await fetch('https://script.google.com/macros/s/AKfycbxQtlJjxESNTE1PKdc8jrT25SzMTMCeKwNUn9Hh9OCCQYKsk0LWP0-F7y9sorWeD9iwmw/exec', {
-        method: 'POST',
-        mode: "no-cors",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ rating })
-      });
+  const url =
+    "https://script.google.com/macros/s/AKfycbx4DKmUyyJxWdZVUbTMss-iXSOSF4dBefdNaeQSl_fcK_9zykgCj1lj8hYh41exAHQNZA/exec" +
+    "?rating=" + encodeURIComponent(rating);
 
-      status.innerText = 'Thank you for your feedback';
-    };
+  fetch(url);
+
+  status.innerText = "Thank you for your feedback";
+};
+
   </script>
 </body>
 </html>
